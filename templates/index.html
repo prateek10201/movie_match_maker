@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Movie MatchMaker - Personalized Recommendations</title>
+    <link rel="icon" href="{{ url_for('static', filename='img/favicon.svg') }}" type="image/svg+xml">
+    <link rel="shortcut icon" href="{{ url_for('static', filename='img/favicon.svg') }}" type="image/svg+xml">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <header>
+        <nav class="navbar">
+            <a href="/" class="logo">
+                <i class="fas fa-film"></i>
+                Movie MatchMaker
+            </a>
+            <div class="nav-links">
+                <a href="/" class="active">Home</a>
+                <a href="#">Discover</a>
+                <a href="#">About</a>
+            </div>
+        </nav>
+    </header>
+
+    <div class="container">
+        <h1>Movie MatchMaker</h1>
+        <p>Find your perfect movie with our advanced AI recommendation system. Based on your preferences, moods, and taste.</p>
+        
+        <div class="recommender-container">
+            <!-- Progress tracker -->
+            <div class="progress-container">
+                <div class="progress-bar" id="progress-bar" style="width: 0%"></div>
+                <div class="progress-step active" id="step-1">1</div>
+                <div class="progress-step" id="step-2">2</div>
+                <div class="progress-step" id="step-3">3</div>
+                <div class="progress-step" id="step-4">4</div>
+            </div>
+
+            <!-- Step 1: Recommendation Type -->
+            <div class="steps-container active" id="step1-container">
+                <h2>What type of recommendation would you like?</h2>
+                <p>Select an option that matches your current needs.</p>
+                
+                <div class="selection-grid">
+                    <div class="selection-card" data-value="content">
+                        <i class="fas fa-thumbs-up"></i>
+                        <h3>Content-based</h3>
+                        <p>Movies similar to ones you already like</p>
+                    </div>
+                    <div class="selection-card" data-value="mood">
+                        <i class="fas fa-smile"></i>
+                        <h3>Mood-based</h3>
+                        <p>Movies to match your current state of mind</p>
+                    </div>
+                    <div class="selection-card" data-value="discovery">
+                        <i class="fas fa-compass"></i>
+                        <h3>Discovery</h3>
+                        <p>Find hidden gems and surprising recommendations</p>
+                    </div>
+                    <div class="selection-card" data-value="regional">
+                        <i class="fas fa-globe"></i>
+                        <h3>Regional Cinema</h3>
+                        <p>Explore movies from specific film industries</p>
+                    </div>
+                </div>
+                
+                <div class="btn-group">
+                    <button class="btn" id="step1-next">
+                        <i class="fas fa-arrow-right"></i>
+                        Next
+                    </button>
+                </div>
+            </div>
+
+            <!-- Step 2: Content-Based Options -->
+            <div class="steps-container" id="step2-content">
+                <h2>What aspect is most important to you?</h2>
+                <p>Select what matters most in finding similar movies.</p>
+                
+                <div class="selection-grid">
+                    <div class="selection-card" data-value="story">
+                        <i class="fas fa-book-open"></i>
+                        <h3>Similar story/theme</h3>
+                        <p>Focus on narrative and thematic elements</p>
+                    </div>
+                    <div class="selection-card" data-value="genre">
+                        <i class="fas fa-theater-masks"></i>
+                        <h3>Same genre</h3>
+                        <p>Movies in your favorite category</p>
+                    </div>
+                    <div class="selection-card" data-value="director">
+                        <i class="fas fa-video"></i>
+                        <h3>Same director</h3>
+                        <p>More from directors you love</p>
+                    </div>
+                    <div class="selection-card" data-value="era">
+                        <i class="fas fa-calendar-alt"></i>
+                        <h3>Similar era/time period</h3>
+                        <p>Movies from your preferred time period</p>
+                    </div>
+                </div>
+                
+                <div class="btn-group">
+                    <button class="btn btn-outline" id="step2-content-back">
+                        <i class="fas fa-arrow-left"></i>
+                        Back
+                    </button>
+                    <button class="btn" id="step2-content-next">
+                        <i class="fas fa-arrow-right"></i>
+                        Next
+                    </button>
+                </div>
+            </div>
+
+            <!-- Step 2: Mood-Based Options -->
+            <div class="steps-container" id="step2-mood">
+                <h2>How are you feeling today?</h2>
+                <p>Select your current mood for personalized recommendations.</p>
+                
+                <div class="selection-grid">
+                    <div class="selection-card" data-value="happy">
+                        <i class="fas fa-laugh"></i>
+                        <h3>Happy/Upbeat</h3>
+                        <p>Fun, light-hearted movies to boost your mood</p>
+                    </div>
+                    <div class="selection-card" data-value="sad">
+                        <i class="fas fa-sad-tear"></i>
+                        <h3>Sad/Melancholic</h3>
+                        <p>Emotionally resonant, thoughtful films</p>
+                    </div>
+                    <div class="selection-card" data-value="excited">
+                        <i class="fas fa-bolt"></i>
+                        <h3>Excited/Energetic</h3>
+                        <p>Action-packed, thrilling adventures</p>
+                    </div>
+                    <div class="selection-card" data-value="relaxed">
+                        <i class="fas fa-couch"></i>
+                        <h3>Relaxed/Calm</h3>
+                        <p>Easy-going, soothing content</p>
+                    </div>
+                    <div class="selection-card" data-value="thoughtful">
+                        <i class="fas fa-brain"></i>
+                        <h3>Thoughtful/Reflective</h3>
+                        <p>Intellectually stimulating, profound stories</p>
+                    </div>
+                    <div class="selection-card" data-value="romantic">
+                        <i class="fas fa-heart"></i>
+                        <h3>Romantic</h3>
+                        <p>Love stories and date night picks</p>
+                    </div>
+                </div>
+                
+                <div class="btn-group">
+                    <button class="btn btn-outline" id="step2-mood-back">
+                        <i class="fas fa-arrow-left"></i>
+                        Back
+                    </button>
+                    <button class="btn" id="step2-mood-next">
+                        <i class="fas fa-arrow-right"></i>
+                        Next
+                    </button>
+                </div>
+            </div>
+
+            <!-- Step 2: Discovery Options -->
+            <div class="steps-container" id="step2-discovery">
+                <h2>What kind of discoveries are you looking for?</h2>
+                <p>Expand your horizons with these options.</p>
+                
+                <div class="selection-grid">
+                    <div class="selection-card" data-value="hidden">
+                        <i class="fas fa-gem"></i>
+                        <h3>Hidden gems</h3>
+                        <p>High-rated but lesser-known movies</p>
+                    </div>
+                    <div class="selection-card" data-value="underrated">
+                        <i class="fas fa-star-half-alt"></i>
+                        <h3>Underrated movies</h3>
+                        <p>Great films that didn't get the recognition they deserved</p>
+                    </div>
+                    <div class="selection-card" data-value="cult">
+                        <i class="fas fa-users"></i>
+                        <h3>Cult classics</h3>
+                        <p>Movies with dedicated fan followings</p>
+                    </div>
+                    <div class="selection-card" data-value="awards">
+                        <i class="fas fa-trophy"></i>
+                        <h3>Award winners</h3>
+                        <p>Critically acclaimed and awarded films</p>
+                    </div>
+                </div>
+                
+                <div class="btn-group">
+                    <button class="btn btn-outline" id="step2-discovery-back">
+                        <i class="fas fa-arrow-left"></i>
+                        Back
+                    </button>
+                    <button class="btn" id="step2-discovery-next">
+                        <i class="fas fa-arrow-right"></i>
+                        Next
+                    </button>
+                </div>
+            </div>
+
+            <!-- Step 2: Regional Cinema Options -->
+            <div class="steps-container" id="step2-regional">
+                <h2>Which regional cinema interests you?</h2>
+                <p>Explore films from different industries around the world.</p>
+                
+                <div class="selection-grid">
+                    <div class="selection-card" data-value="Hollywood">
+                        <i class="fas fa-film"></i>
+                        <h3>Hollywood</h3>
+                        <p>American and Western cinema</p>
+                    </div>
+                    <div class="selection-card" data-value="Bollywood">
+                        <i class="fas fa-film"></i>
+                        <h3>Bollywood</h3>
+                        <p>Hindi cinema from India</p>
+                    </div>
+                    <div class="selection-card" data-value="Tollywood">
+                        <i class="fas fa-film"></i>
+                        <h3>Tollywood</h3>
+                        <p>Telugu cinema from South India</p>
+                    </div>
+                    <div class="selection-card" data-value="Kollywood">
+                        <i class="fas fa-film"></i>
+                        <h3>Kollywood</h3>
+                        <p>Tamil cinema from South India</p>
+                    </div>
+                </div>
+                
+                <div class="btn-group">
+                    <button class="btn btn-outline" id="step2-regional-back">
+                        <i class="fas fa-arrow-left"></i>
+                        Back
+                    </button>
+                    <button class="btn" id="step2-regional-next">
+                        <i class="fas fa-arrow-right"></i>
+                        Next
+                    </button>
+                </div>
+            </div>
+
+            <!-- Step 3: Genre Selection (Common for all types) -->
+            <div class="steps-container" id="step3-genre">
+                <h2>Select your preferred genre</h2>
+                <p>Choose one or more genres that interest you.</p>
+                
+                <div class="selection-grid" id="genre-grid">
+                    <!-- Genres will be populated dynamically -->
+                </div>
+                
+                <div class="btn-group">
+                    <button class="btn btn-outline" id="step3-back">
+                        <i class="fas fa-arrow-left"></i>
+                        Back
+                    </button>
+                    <button class="btn" id="step3-next">
+                        <i class="fas fa-arrow-right"></i>
+                        Next
+                    </button>
+                </div>
+            </div>
+
+            <!-- Step 4: Final Preferences -->
+            <div class="steps-container" id="step4-preferences">
+                <h2>Additional Preferences</h2>
+                <p>Fine-tune your recommendations with these final options.</p>
+                
+                <div class="form-group">
+                    <label for="time-period">Time Period</label>
+                    <select class="form-control" id="time-period">
+                        <option value="any">Any time period</option>
+                        <option value="classic">Classic (before 2000)</option>
+                        <option value="modern">Modern (2000-2020)</option>
+                        <option value="recent">Recent (2020+)</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label>Rating Preferences</label>
+                    <div class="selection-grid">
+                        <div class="selection-card" data-value="high-rated">
+                            <i class="fas fa-star"></i>
+                            <h3>Highly-rated only</h3>
+                            <p>7+ rating on average</p>
+                        </div>
+                        <div class="selection-card" data-value="any-rating">
+                            <i class="fas fa-star-half-alt"></i>
+                            <h3>Any rating</h3>
+                            <p>Open to all quality levels</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label>Popularity</label>
+                    <div class="selection-grid">
+                        <div class="selection-card" data-value="popular">
+                            <i class="fas fa-fire"></i>
+                            <h3>Popular titles</h3>
+                            <p>Well-known and widely watched</p>
+                        </div>
+                        <div class="selection-card" data-value="lesser-known">
+                            <i class="fas fa-lightbulb"></i>
+                            <h3>Lesser-known titles</h3>
+                            <p>Discover movies you might have missed</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="btn-group">
+                    <button class="btn btn-outline" id="step4-back">
+                        <i class="fas fa-arrow-left"></i>
+                        Back
+                    </button>
+                    <button class="btn btn-secondary" id="get-recommendations">
+                        <i class="fas fa-magic"></i>
+                        Get Recommendations
+                    </button>
+                </div>
+            </div>
+
+            <!-- Recommendations Results -->
+            <div class="steps-container" id="recommendations-results">
+                <h2>Your Personalized Recommendations</h2>
+                <p>Based on your preferences, we think you'll love these movies:</p>
+                
+                <div class="loading-recommendations" id="loading-recommendations">
+                    <div class="loader"></div>
+                    <p>Finding the perfect movies for you...</p>
+                </div>
+                
+                <div class="recommendations-grid" id="recommendations-container">
+                    <!-- Movie recommendations will be populated here -->
+                </div>
+                
+                <div class="btn-group">
+                    <button class="btn btn-outline" id="start-over">
+                        <i class="fas fa-redo"></i>
+                        Start Over
+                    </button>
+                    <button class="btn btn-secondary" id="refine-preferences">
+                        <i class="fas fa-sliders-h"></i>
+                        Refine Preferences
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+</body>
+</html>
